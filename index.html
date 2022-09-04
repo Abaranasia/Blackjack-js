@@ -11,15 +11,47 @@
 </head>
 <body>
   <header class="title" >
-    Blackjack
+    <h1>
+      Blackjack
+    </h1>
   </header>
   
   <div class="row mt-2">
     <div class="col text-center">
+
       <button class="btn btn-danger">New game</button>
       <button class="btn btn-primary">Get card</button>
       <button class="btn btn-primary">Stop</button>
+
     </div>
+  </div>
+
+  <div class="row container">
+
+    <div class="col">
+      <h2>Human - <small>0</small></h2>
+      <div id="human-cards">
+        <img src="assets/cartas/10D.png" alt="" class="card">
+        <img src="assets/cartas/10D.png" alt="" class="card">
+        <img src="assets/cartas/10D.png" alt="" class="card">
+        <img src="assets/cartas/10D.png" alt="" class="card">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row container">
+
+    <div class="col">
+      <h2>Computer - <small>0</small></h2>
+      <div id="computer-cards">
+        <img src="assets/cartas/10D.png" alt="" class="card">
+        <img src="assets/cartas/10D.png" alt="" class="card">
+        <img src="assets/cartas/10D.png" alt="" class="card">
+        <img src="assets/cartas/10D.png" alt="" class="card">
+      </div>
+    </div>
+
   </div>
 
   <script src="js/juego.js"></script>

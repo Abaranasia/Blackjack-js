@@ -3,10 +3,24 @@ html, body {
   background-color: #2F4F30;
   color: white;
 }
+
 .title {
   text-align: center;
   background-color: black;
   color: white;
   padding: 20px;
   font-size: 25px
+}
+
+.card {
+  display: inline;
+  position: relative;
+  width: 150px;
+  left: 100px;
+  margin-left: -75px;
+  box-shadow: -4px 4px 5px 0px rgba(0,0,0,0.75);
+}
+
+#human-cards, #computer-cards {
+  height: 250px;
 }
