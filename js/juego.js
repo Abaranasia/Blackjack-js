@@ -21,7 +21,7 @@ const createDeck = () => {
       deck.push(special + type)
     }
   };
-
+  deck = _.shuffle(deck),
   console.log(deck)
 };
 
