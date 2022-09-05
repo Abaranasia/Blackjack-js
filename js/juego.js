@@ -57,30 +57,64 @@ const calculateCardValue = (card) => {
 const paintCard = (card) => {
   const cardImage = document.createElement('img');
   cardImage.src = `./assets/cartas/${card}.png`;
-  console.log(cardImage.src)
   cardImage.classList.add('card');
   return cardImage
 }
 
+
+// Computer turn handler
+const computerTurn = (minPoints) => {
+  do {
+    const card = getNewCard();
+
+    computerPoints = computerPoints + calculateCardValue(card);
+    displayedPoints[1].innerText = computerPoints;
+
+    computerCardsDiv.append(paintCard(card));
+
+    if (minPoints > 21) break;
+
+  } while ((computerPoints < minPoints) && (minPoints <= 21));
+  btnNewCard.disabled = true;
+  btnEndGame.disabled = true;
+
+  if (computerPoints > 21) displayedPoints[1].classList.add("loss");
+
+  alert((computerPoints === minPoints)
+    ? 'Both players tie'
+    : (computerPoints > minPoints && computerPoints <= 21)
+      ? 'Computer wins'
+      : 'Human wins'
+  )
+};
+
+
 // Events
 btnNewCard.addEventListener('click', () => {
   const card = getNewCard();
-  console.log({ card })
-  humanPoints = humanPoints + calculateCardValue(card);
 
+  humanPoints = humanPoints + calculateCardValue(card);
   displayedPoints[0].innerText = humanPoints;
+
   humanCardsDiv.append(paintCard(card));
 
   if (humanPoints > 21) {
     btnNewCard.disabled = true;
+    btnEndGame.disabled = true;
     displayedPoints[0].classList.add("loss");
-    console.log('This human has lost!')
+    computerTurn(humanPoints)
 
   } else if (humanPoints === 21) {
     btnNewCard.disabled = true;
+    btnEndGame.disabled = true;
     window.alert('Human wins!');
   }
 });
 
+btnEndGame.addEventListener('click', () => {
+  btnNewCard.disabled = true;
+  computerTurn(humanPoints)
+})
 
 createDeck();
+
