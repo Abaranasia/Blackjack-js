@@ -20,6 +20,9 @@ const btnEndGame = document.querySelector('#btnEndGame');
 
 const displayedPoints = document.querySelectorAll('small');
 
+const humanCardsDiv = document.querySelector('#human-cards');
+const computerCardsDiv = document.querySelector('#computer-cards');
+
 // Functions
 const createDeck = () => {
   for (let i = 2; i <= 10; i++) {
@@ -51,15 +54,33 @@ const calculateCardValue = (card) => {
     : parseInt(value)
 };
 
-createDeck();
+const paintCard = (card) => {
+  const cardImage = document.createElement('img');
+  cardImage.src = `./assets/cartas/${card}.png`;
+  console.log(cardImage.src)
+  cardImage.classList.add('card');
+  return cardImage
+}
 
 // Events
 btnNewCard.addEventListener('click', () => {
   const card = getNewCard();
   console.log({ card })
   humanPoints = humanPoints + calculateCardValue(card);
-  displayedPoints[0].innerText = humanPoints
+
+  displayedPoints[0].innerText = humanPoints;
+  humanCardsDiv.append(paintCard(card));
+
+  if (humanPoints > 21) {
+    btnNewCard.disabled = true;
+    displayedPoints[0].classList.add("loss");
+    console.log('This human has lost!')
+
+  } else if (humanPoints === 21) {
+    btnNewCard.disabled = true;
+    window.alert('Human wins!');
+  }
 });
 
 
-
+createDeck();
