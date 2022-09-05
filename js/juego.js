@@ -111,10 +111,30 @@ btnNewCard.addEventListener('click', () => {
   }
 });
 
+
 btnEndGame.addEventListener('click', () => {
   btnNewCard.disabled = true;
   computerTurn(humanPoints)
 })
+
+btnNewGame.addEventListener('click', () => {
+  createDeck();
+
+  humanPoints = 0;
+  computerPoints = 0;
+
+  displayedPoints[0].innerText = 0;
+  displayedPoints[1].innerText = 0;
+
+  displayedPoints[0].classList.remove("loss");
+  displayedPoints[1].classList.remove("loss");
+
+  humanCardsDiv.innerHTML = "";
+  computerCardsDiv.innerHTML = "";
+
+  btnNewCard.disabled = false;
+  btnEndGame.disabled = false;
+});
 
 createDeck();
 
