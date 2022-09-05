@@ -30,12 +30,21 @@ const createDeck = () => {
 const getNewCard = () => {
   if (deck.length === 0) throw 'No more cards available'
   const card = deck.shift();
+  console.log({ card })
   return card
 
 };
 
+const cardValue = (card) => {
+  const value = card.substring(0, card.length - 1);
+
+  return (isNaN(value)) ?
+    (value === 'A') ? 11 : 10
+    : parseInt(value)
+};
+
 createDeck();
 
-getNewCard();
 
+console.log(cardValue(getNewCard()))
 
