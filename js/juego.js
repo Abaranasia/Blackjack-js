@@ -35,7 +35,7 @@ const getNewCard = () => {
 
 };
 
-const cardValue = (card) => {
+const calculateCardValue = (card) => {
   const value = card.substring(0, card.length - 1);
 
   return (isNaN(value)) ?
@@ -46,5 +46,5 @@ const cardValue = (card) => {
 createDeck();
 
 
-console.log(cardValue(getNewCard()))
+console.log(calculateCardValue(getNewCard()))
 
