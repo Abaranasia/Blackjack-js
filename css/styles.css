@@ -21,6 +21,10 @@ html, body {
   box-shadow: -4px 4px 5px 0px rgba(0,0,0,0.75);
 }
 
+.loss{
+  color: red;
+}
+
 #human-cards, #computer-cards {
   height: 250px;
 }
