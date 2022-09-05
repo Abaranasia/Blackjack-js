@@ -5,11 +5,22 @@
  * 2S = Two of Spades
  */
 
-let deck = [];
 const types = ['C', 'D', 'H', 'S'];
 const specials = ['A', 'J', 'Q', 'K'];
 
+let deck = [];
 
+let humanPoints = 0;
+let computerPoints = 0;
+
+// HTML references
+const btnNewGame = document.querySelector('#btnNewGame');
+const btnNewCard = document.querySelector('#btnNewCard');
+const btnEndGame = document.querySelector('#btnEndGame');
+
+const displayedPoints = document.querySelectorAll('small');
+
+// Functions
 const createDeck = () => {
   for (let i = 2; i <= 10; i++) {
     for (let type of types) {
@@ -22,17 +33,14 @@ const createDeck = () => {
       deck.push(special + type)
     }
   };
-  deck = _.shuffle(deck),
-  console.log(deck)
+  deck = _.shuffle(deck)
 };
 
 
 const getNewCard = () => {
   if (deck.length === 0) throw 'No more cards available'
   const card = deck.shift();
-  console.log({ card })
   return card
-
 };
 
 const calculateCardValue = (card) => {
@@ -45,6 +53,13 @@ const calculateCardValue = (card) => {
 
 createDeck();
 
+// Events
+btnNewCard.addEventListener('click', () => {
+  const card = getNewCard();
+  console.log({ card })
+  humanPoints = humanPoints + calculateCardValue(card);
+  displayedPoints[0].innerText = humanPoints
+});
 
-console.log(calculateCardValue(getNewCard()))
+
 
