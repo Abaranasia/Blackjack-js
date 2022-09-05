@@ -9,6 +9,7 @@ let deck = [];
 const types = ['C', 'D', 'H', 'S'];
 const specials = ['A', 'J', 'Q', 'K'];
 
+
 const createDeck = () => {
   for (let i = 2; i <= 10; i++) {
     for (let type of types) {
@@ -25,4 +26,16 @@ const createDeck = () => {
   console.log(deck)
 };
 
+
+const getNewCard = () => {
+  if (deck.length === 0) throw 'No more cards available'
+  const card = deck.shift();
+  return card
+
+};
+
 createDeck();
+
+getNewCard();
+
+
