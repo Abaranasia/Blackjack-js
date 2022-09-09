@@ -28,3 +28,16 @@ html, body {
 #human-cards, #computer-cards {
   height: 250px;
 }
+#winner{
+  display: none;
+  height: 100px;
+  width: 80%;
+  margin: 0px auto;
+  color: purple;
+  font-size: 3rem;
+  text-align: center;
+  line-height: 100px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 12px 12px 19px -6px rgba(0,0,0,1);
+}
