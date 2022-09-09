@@ -82,7 +82,7 @@ const computerTurn = (minPoints) => {
 
   alert((computerPoints === minPoints)
     ? 'Both players tie'
-    : (computerPoints > minPoints && computerPoints <= 21)
+    : (minPoints > 21 || (computerPoints > minPoints && computerPoints <= 21))
       ? 'Computer wins'
       : 'Human wins'
   )
