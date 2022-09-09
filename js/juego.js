@@ -1,140 +1,146 @@
-/**
+
+(() => {
+  'use strict'
+
+/** We put all the code nside a module pattern to ensure no functions or cosnt/variables are available from outside */
+  /**
  * 2C = Two of Clubs
  * 2D = Two of Diamonds
  * 2H = Two of Hearts
  * 2S = Two of Spades
  */
 
-const types = ['C', 'D', 'H', 'S'];
-const specials = ['A', 'J', 'Q', 'K'];
+  const types = ['C', 'D', 'H', 'S'];
+  const specials = ['A', 'J', 'Q', 'K'];
 
-let deck = [];
+  let deck = [];
 
-let humanPoints = 0;
-let computerPoints = 0;
+  let humanPoints = 0;
+  let computerPoints = 0;
 
-// HTML references
-const btnNewGame = document.querySelector('#btnNewGame');
-const btnNewCard = document.querySelector('#btnNewCard');
-const btnEndGame = document.querySelector('#btnEndGame');
+  // HTML references
+  const btnNewGame = document.querySelector('#btnNewGame');
+  const btnNewCard = document.querySelector('#btnNewCard');
+  const btnEndGame = document.querySelector('#btnEndGame');
 
-const displayedPoints = document.querySelectorAll('small');
+  const displayedPoints = document.querySelectorAll('small');
 
-const humanCardsDiv = document.querySelector('#human-cards');
-const computerCardsDiv = document.querySelector('#computer-cards');
+  const humanCardsDiv = document.querySelector('#human-cards');
+  const computerCardsDiv = document.querySelector('#computer-cards');
 
-// Functions
-const createDeck = () => {
-  for (let i = 2; i <= 10; i++) {
-    for (let type of types) {
-      deck.push(i + type)
+  // Functions
+  const createDeck = () => {
+    for (let i = 2; i <= 10; i++) {
+      for (let type of types) {
+        deck.push(i + type)
+      };
     };
+
+    for (let type of types) {
+      for (let special of specials) {
+        deck.push(special + type)
+      }
+    };
+    deck = _.shuffle(deck)
   };
 
-  for (let type of types) {
-    for (let special of specials) {
-      deck.push(special + type)
-    }
+
+  const getNewCard = () => {
+    if (deck.length === 0) throw 'No more cards available'
+    const card = deck.shift();
+    return card
   };
-  deck = _.shuffle(deck)
-};
+
+  const calculateCardValue = (card) => {
+    const value = card.substring(0, card.length - 1);
+
+    return (isNaN(value)) ?
+      (value === 'A') ? 11 : 10
+      : parseInt(value)
+  };
+
+  const paintCard = (card) => {
+    const cardImage = document.createElement('img');
+    cardImage.src = `./assets/cartas/${card}.png`;
+    cardImage.classList.add('card');
+    return cardImage
+  }
 
 
-const getNewCard = () => {
-  if (deck.length === 0) throw 'No more cards available'
-  const card = deck.shift();
-  return card
-};
+  // Computer turn handler
+  const computerTurn = (minPoints) => {
+    do {
+      const card = getNewCard();
 
-const calculateCardValue = (card) => {
-  const value = card.substring(0, card.length - 1);
+      computerPoints = computerPoints + calculateCardValue(card);
+      displayedPoints[1].innerText = computerPoints;
 
-  return (isNaN(value)) ?
-    (value === 'A') ? 11 : 10
-    : parseInt(value)
-};
+      computerCardsDiv.append(paintCard(card));
 
-const paintCard = (card) => {
-  const cardImage = document.createElement('img');
-  cardImage.src = `./assets/cartas/${card}.png`;
-  cardImage.classList.add('card');
-  return cardImage
-}
+      if (minPoints > 21) break;
+
+    } while ((computerPoints < minPoints) && (minPoints <= 21));
+    btnNewCard.disabled = true;
+    btnEndGame.disabled = true;
+
+    if (computerPoints > 21) displayedPoints[1].classList.add("loss");
+
+    alert((computerPoints === minPoints)
+      ? 'Both players tie'
+      : (minPoints > 21 || (computerPoints > minPoints && computerPoints <= 21))
+        ? 'Computer wins'
+        : 'Human wins'
+    )
+  };
 
 
-// Computer turn handler
-const computerTurn = (minPoints) => {
-  do {
+  // Events
+  btnNewCard.addEventListener('click', () => {
     const card = getNewCard();
 
-    computerPoints = computerPoints + calculateCardValue(card);
-    displayedPoints[1].innerText = computerPoints;
+    humanPoints = humanPoints + calculateCardValue(card);
+    displayedPoints[0].innerText = humanPoints;
 
-    computerCardsDiv.append(paintCard(card));
+    humanCardsDiv.append(paintCard(card));
 
-    if (minPoints > 21) break;
+    if (humanPoints > 21) {
+      btnNewCard.disabled = true;
+      btnEndGame.disabled = true;
+      displayedPoints[0].classList.add("loss");
+      computerTurn(humanPoints)
 
-  } while ((computerPoints < minPoints) && (minPoints <= 21));
-  btnNewCard.disabled = true;
-  btnEndGame.disabled = true;
-
-  if (computerPoints > 21) displayedPoints[1].classList.add("loss");
-
-  alert((computerPoints === minPoints)
-    ? 'Both players tie'
-    : (minPoints > 21 || (computerPoints > minPoints && computerPoints <= 21))
-      ? 'Computer wins'
-      : 'Human wins'
-  )
-};
+    } else if (humanPoints === 21) {
+      btnNewCard.disabled = true;
+      btnEndGame.disabled = true;
+      window.alert('Human wins!');
+    }
+  });
 
 
-// Events
-btnNewCard.addEventListener('click', () => {
-  const card = getNewCard();
-
-  humanPoints = humanPoints + calculateCardValue(card);
-  displayedPoints[0].innerText = humanPoints;
-
-  humanCardsDiv.append(paintCard(card));
-
-  if (humanPoints > 21) {
+  btnEndGame.addEventListener('click', () => {
     btnNewCard.disabled = true;
-    btnEndGame.disabled = true;
-    displayedPoints[0].classList.add("loss");
     computerTurn(humanPoints)
+  })
 
-  } else if (humanPoints === 21) {
-    btnNewCard.disabled = true;
-    btnEndGame.disabled = true;
-    window.alert('Human wins!');
-  }
-});
+  btnNewGame.addEventListener('click', () => {
+    createDeck();
 
+    humanPoints = 0;
+    computerPoints = 0;
 
-btnEndGame.addEventListener('click', () => {
-  btnNewCard.disabled = true;
-  computerTurn(humanPoints)
-})
+    displayedPoints[0].innerText = 0;
+    displayedPoints[1].innerText = 0;
 
-btnNewGame.addEventListener('click', () => {
+    displayedPoints[0].classList.remove("loss");
+    displayedPoints[1].classList.remove("loss");
+
+    humanCardsDiv.innerHTML = "";
+    computerCardsDiv.innerHTML = "";
+
+    btnNewCard.disabled = false;
+    btnEndGame.disabled = false;
+  });
+
   createDeck();
-
-  humanPoints = 0;
-  computerPoints = 0;
-
-  displayedPoints[0].innerText = 0;
-  displayedPoints[1].innerText = 0;
-
-  displayedPoints[0].classList.remove("loss");
-  displayedPoints[1].classList.remove("loss");
-
-  humanCardsDiv.innerHTML = "";
-  computerCardsDiv.innerHTML = "";
-
-  btnNewCard.disabled = false;
-  btnEndGame.disabled = false;
-});
-
-createDeck();
+})();
 
